@@ -3,7 +3,7 @@ apply plugin: 'application'
 mainClassName = 'io.electrica.pipeline.java8.launcher.PipelineLauncher'
 
 dependencies {
-    compile project(':spi')
+    compile project(':electrica-pipeline-java8-spi')
     compile 'io.electrica.sdk.java8:core'
 
     compile "com.google.guava:guava:$guava"
