@@ -1,0 +1,169 @@
+plugins {
+    id 'com.github.kt3k.coveralls' version '2.8.2'
+    id 'io.spring.dependency-management' version '1.0.6.RELEASE' apply false
+}
+
+allprojects {
+    apply plugin: 'java'
+    apply plugin: 'idea'
+    apply plugin: 'jacoco'
+    apply plugin: 'checkstyle'
+    apply plugin: 'findbugs'
+
+    repositories {
+        jcenter()
+        mavenCentral()
+        maven {
+            url 'http://maven-repo.electrica.io'
+        }
+    }
+
+    sourceCompatibility = 1.8
+    targetCompatibility = 1.8
+
+    group = 'io.electrica.pipeline.java8'
+    version = '0.0.1-SNAPSHOT'
+}
+
+//dependencies {
+//    compileOnly 'org.projectlombok:lombok:1.18.4'
+//    annotationProcessor 'org.projectlombok:lombok:1.18.4'
+//
+//    compile 'io.electrica.sdk.java8:core'
+//    compile 'io.electrica.sdk.java8:hackerrank'
+//    compile 'io.electrica.sdk.java8:brassring'
+//
+//    compile 'io.electrica.connector:brassring:0.0.1'
+//
+//    compile 'org.slf4j:slf4j-api:1.7.25'
+//    compile 'ch.qos.logback:logback-classic:1.0.13'
+//    compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.9.6'
+//}
+
+
+
+subprojects {
+    ext {
+        electricaSdkJava8 = '0.0.1'
+
+        findbugsJsr305 = '3.0.2'
+        lombok = '1.18.4'
+        jCommander= '1.71'
+        guava = '26.0-jre'
+        logback = '1.0.13'
+
+        mockito = '2.23.0'
+        jupiter = '5.3.2'
+    }
+
+    apply plugin: 'io.spring.dependency-management'
+    dependencyManagement {
+        imports {
+            mavenBom "io.electrica.sdk.java8:dependencies:$electricaSdkJava8"
+        }
+    }
+
+    // Setup Lombok, test libraries and JUnit5 implementation for all modules
+    dependencies {
+        compileOnly "org.projectlombok:lombok:$lombok"
+        annotationProcessor "org.projectlombok:lombok:$lombok"
+
+        testCompile "org.mockito:mockito-core:$mockito"
+        testCompileOnly "org.projectlombok:lombok:$lombok"
+        testAnnotationProcessor "org.projectlombok:lombok:$lombok"
+
+        testImplementation "org.junit.jupiter:junit-jupiter-api:$jupiter"
+        testRuntimeOnly "org.junit.jupiter:junit-jupiter-engine:$jupiter"
+    }
+
+    test {
+        useJUnitPlatform()
+    }
+
+//    def moduleName = it.name
+//    if (moduleName != 'spi') {
+//        apply plugin: 'application'
+//    }
+
+    jacocoTestReport {
+        reports {
+            xml.enabled = true // coveralls plugin depends on xml format report
+            html.enabled = true
+        }
+    }
+
+    // Checkstyle settings
+    checkstyle {
+        toolVersion '7.8.1'
+        configFile file("${rootDir}/config/checkstyle/checkstyle.xml")
+    }
+    checkstyleMain {
+        source = 'src/main/java'
+    }
+    checkstyleTest {
+        source = 'src/test/java'
+    }
+
+    tasks.withType(Checkstyle) {
+        reports {
+            xml.enabled false
+            html.enabled true
+        }
+    }
+
+    // Findbugs  settings
+    findbugs {
+        ignoreFailures = false
+        toolVersion = '3.0.1'
+        sourceSets = [sourceSets.main]
+        excludeFilter = file("${rootDir}/config/findbugs/excludeFilter.xml")
+        reportsDir = file("${buildDir}/reports/findbugs")
+        effort = 'max'
+    }
+
+    tasks.withType(FindBugs) {
+        reports {
+            xml.enabled false
+            html.enabled true
+        }
+    }
+
+} // subprojects
+
+def projects = subprojects
+
+task jacocoMerge(type: JacocoMerge) {
+    projects.each { subproject ->
+        executionData subproject.tasks.withType(Test)
+    }
+    doFirst {
+        executionData = files(executionData.findAll { it.exists() })
+    }
+}
+
+task jacocoRootReport(type: JacocoReport, group: 'Coverage reports') {
+    description = 'Generates an aggregate report from all subprojects'
+    dependsOn projects.test, jacocoMerge
+
+    additionalSourceDirs = files(projects.sourceSets.main.allSource.srcDirs)
+    sourceDirectories = files(projects.sourceSets.main.allSource.srcDirs)
+    classDirectories = files(projects.sourceSets.main.output)
+    executionData jacocoMerge.destinationFile
+
+    reports {
+        html.enabled = true // human readable
+        xml.enabled = true // required by coveralls
+    }
+}
+
+coveralls {
+    sourceDirs = projects.sourceSets.main.allSource.srcDirs.flatten()
+    jacocoReportPath = "${buildDir}/reports/jacoco/jacocoRootReport/jacocoRootReport.xml"
+}
+
+tasks.coveralls {
+    group = 'Coverage reports'
+    description = 'Uploads the aggregated coverage report to Coveralls'
+
+    dependsOn jacocoRootReport
+}
