@@ -1,0 +1,14 @@
+apply plugin: 'application'
+
+mainClassName = 'io.electrica.pipeline.java8.launcher.PipelineLauncher'
+
+dependencies {
+    compile project(':spi')
+    compile 'io.electrica.sdk.java8:core'
+
+    compile "com.google.guava:guava:$guava"
+    compile "com.beust:jcommander:$jCommander"
+    compile "ch.qos.logback:logback-classic:$logback"
+}
+
+startScripts.classpath = files('*')
