@@ -16,22 +16,27 @@
     </Match>
     <Match>
         <Class name="org.wso2.siddhi.plugins.idea.util.SiddhiUtil"/>
-        <Method name="isWorkspaceFile" />
+        <Method name="isWorkspaceFile"/>
         <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
     </Match>
     <Match>
         <Class name="org.wso2.siddhi.plugins.idea.SiddhiASTFactory"/>
-        <Method name="createLeaf" />
+        <Method name="createLeaf"/>
         <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
     </Match>
     <Match>
         <Class name="org.wso2.siddhi.plugins.idea.SiddhiASTFactory"/>
-        <Method name="createComposite" />
+        <Method name="createComposite"/>
         <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
     </Match>
     <Match>
         <Class name="org.wso2.siddhi.plugins.idea.SiddhiIcons"/>
-        <Field name="ICON" />
+        <Field name="ICON"/>
+        <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
+    </Match>
+    <Match>
+        <Class name="io.electrica.pipeline.cli.PipelineLauncherBuilder"/>
+        <Method name="addLambdaJarsToArchive"/>
         <Bug pattern="NP_NULL_ON_SOME_PATH_FROM_RETURN_VALUE"/>
     </Match>
 </FindBugsFilter>
