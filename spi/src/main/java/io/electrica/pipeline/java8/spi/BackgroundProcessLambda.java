@@ -4,7 +4,7 @@ import io.electrica.sdk.java8.api.Electrica;
 
 import java.util.concurrent.CountDownLatch;
 
-public abstract class BackgroungProcessLambda implements Lambda {
+public abstract class BackgroundProcessLambda implements Lambda {
 
     private final CountDownLatch stopSignalLatch = new CountDownLatch(1);
 

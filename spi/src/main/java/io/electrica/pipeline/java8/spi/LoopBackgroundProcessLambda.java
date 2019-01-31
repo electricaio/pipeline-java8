@@ -5,7 +5,7 @@ import io.electrica.sdk.java8.api.Electrica;
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
-public abstract class LoopBackgroungProcessLambda implements Lambda {
+public abstract class LoopBackgroundProcessLambda implements Lambda {
 
     private static final long DEFAULT_SLEEP_INTERVAL = TimeUnit.MINUTES.toMillis(1);
 
