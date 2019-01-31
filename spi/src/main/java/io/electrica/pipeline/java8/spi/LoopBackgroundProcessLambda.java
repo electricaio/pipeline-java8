@@ -36,12 +36,12 @@ public abstract class LoopBackgroundProcessLambda implements Lambda {
      *
      * @return {@code true} to continue loop, otherwise {@code false}
      */
-    protected abstract boolean inLoop();
+    protected abstract boolean doInLoop();
 
     @Override
     public void doWork(Electrica electrica) throws Exception {
         while (threadReference.get().isInterrupted()) {
-            if (!inLoop()) {
+            if (!doInLoop()) {
                 break;
             }
             Thread.sleep(getSleepInterval());
