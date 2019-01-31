@@ -2,6 +2,7 @@ rootProject.name = 'electrica-pipeline-java8'
 include 'spi'
 include 'launcher'
 include 'cli'
+include 'hackerrank'
 
 rootProject.children.each {
     if (it.name == 'cli'){

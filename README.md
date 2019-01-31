@@ -30,7 +30,7 @@ Usage: electrica-pipeline-cli [options] [command] [command options]
 
 ### Generate pipeline template for Java 8
 Command allow you to create pipeline project skeleton for Java 8 language.
-Please use `electrica-pipeline-cli generate-java8 --help` to find actual commend documentation.
+Please use `electrica-pipeline-cli generate-java8 --help` to find actual command documentation.
 
 ```bash
 Generate lambda skeleton project for Java 8.
@@ -55,7 +55,7 @@ After this you can open project in your IDE and start develop your own lambdas.
 
 ### Build Pipeline Launcher Archive
 Command allow you to build complete pipeline launcher archive for specified lambda jars and dependencies.
-Please use `electrica-pipeline-cli build-launcher --help` to find actual commend documentation.
+Please use `electrica-pipeline-cli build-launcher --help` to find actual command documentation.
 
 ```bash
 Build complete pipeline launcher archive for specified lambdas.
@@ -87,7 +87,7 @@ See Pipeline Launcher documentation below for more details.
 
 ### Build Pipeline Docker Image
 Command allow you to build Docker image from pipeline launcher archive.
-Please use `electrica-pipeline-cli build-docker --help` to find actual commend documentation.
+Please use `electrica-pipeline-cli build-docker --help` to find actual command documentation.
 
 ```bash
 Build docker image for specified pipeline launcher.
