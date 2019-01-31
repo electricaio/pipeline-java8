@@ -1,0 +1,6 @@
+dependencies {
+    compile 'io.electrica.sdk.java8:hackerrank'
+
+    compile 'io.electrica.connector:brassring:0.0.1'
+    compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.9.6'
+}

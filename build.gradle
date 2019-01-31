@@ -25,30 +25,14 @@ allprojects {
     version = '0.0.1-SNAPSHOT'
 }
 
-//dependencies {
-//    compileOnly 'org.projectlombok:lombok:1.18.4'
-//    annotationProcessor 'org.projectlombok:lombok:1.18.4'
-//
-//    compile 'io.electrica.sdk.java8:core'
-//    compile 'io.electrica.sdk.java8:hackerrank'
-//    compile 'io.electrica.sdk.java8:brassring'
-//
-//    compile 'io.electrica.connector:brassring:0.0.1'
-//
-//    compile 'org.slf4j:slf4j-api:1.7.25'
-//    compile 'ch.qos.logback:logback-classic:1.0.13'
-//    compile 'com.fasterxml.jackson.dataformat:jackson-dataformat-xml:2.9.6'
-//}
-
-
-
 subprojects {
     ext {
         electricaSdkJava8 = '0.0.1'
 
         findbugsJsr305 = '3.0.2'
         lombok = '1.18.4'
-        jCommander= '1.71'
+        autoService = '1.0-rc4'
+        jCommander = '1.71'
         guava = '26.0-jre'
         logback = '1.0.13'
 
@@ -80,10 +64,23 @@ subprojects {
         useJUnitPlatform()
     }
 
-//    def moduleName = it.name
-//    if (moduleName != 'spi') {
-//        apply plugin: 'application'
-//    }
+    def moduleName = it.name
+    if (moduleName != 'electrica-pipeline-cli' &&
+            moduleName != 'electrica-pipeline-java8-spi' &&
+            moduleName != 'electrica-pipeline-java8-launcher') {
+
+        dependencies {
+            compileOnly "com.google.auto.service:auto-service:$autoService"
+            annotationProcessor "com.google.auto.service:auto-service:$autoService"
+
+            compile project(':electrica-pipeline-java8-spi')
+        }
+
+        // Build one fat jar with all dependencies inside
+        jar {
+            from { configurations.compile.collect { it.isDirectory() ? it : zipTree(it) } }
+        }
+    }
 
     jacocoTestReport {
         reports {
