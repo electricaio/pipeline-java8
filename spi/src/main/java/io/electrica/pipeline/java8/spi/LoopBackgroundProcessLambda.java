@@ -1,10 +1,12 @@
 package io.electrica.pipeline.java8.spi;
 
 import io.electrica.sdk.java8.api.Electrica;
+import lombok.extern.slf4j.Slf4j;
 
 import java.util.concurrent.TimeUnit;
 import java.util.concurrent.atomic.AtomicReference;
 
+@Slf4j
 public abstract class LoopBackgroundProcessLambda implements Lambda {
 
     private static final long DEFAULT_SLEEP_INTERVAL = TimeUnit.MINUTES.toMillis(1);
@@ -41,9 +43,14 @@ public abstract class LoopBackgroundProcessLambda implements Lambda {
     @Override
     public void doWork(Electrica electrica) throws Exception {
         while (threadReference.get().isInterrupted()) {
-            if (!doInLoop()) {
-                break;
+            try {
+                if (!doInLoop()) {
+                    break;
+                }
+            } catch (Exception e) {
+                log.error("Unhandled in-loop job error", e);
             }
+
             Thread.sleep(getSleepInterval());
         }
     }
