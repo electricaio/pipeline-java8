@@ -7,6 +7,7 @@ import io.electrica.sdk.java8.core.SingleInstanceHttpModule;
 import lombok.AllArgsConstructor;
 import lombok.Getter;
 import lombok.extern.slf4j.Slf4j;
+import org.slf4j.MDC;
 
 import javax.annotation.Nullable;
 import java.util.concurrent.*;
@@ -59,13 +60,19 @@ class LambdaManager {
         Electrica electrica = createElectrica();
         CountDownLatch lambdaStartedLatch = new CountDownLatch(1);
         Future<Void> future = executor.submit(() -> {
-            try {
+            try (MDC.MDCCloseable ignored = MDC.putCloseable("lambdaName", getName())) {
+                log.debug("Lambda starting initialization");
                 lambda.initialize(electrica);
                 lambdaStartedLatch.countDown();
+                log.debug("Lambda successfully finished initialization");
                 try {
+                    log.debug("Lambda starting main job");
                     lambda.doWork(electrica);
+                    log.info("Lambda successfully finished main job");
                 } finally {
+                    log.debug("Lambda starting destroy");
                     lambda.destroy(electrica);
+                    log.debug("Lambda successfully finished destroy");
                 }
                 return null;
             } finally {

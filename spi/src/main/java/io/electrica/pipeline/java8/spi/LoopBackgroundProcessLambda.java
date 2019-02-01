@@ -42,7 +42,7 @@ public abstract class LoopBackgroundProcessLambda implements Lambda {
 
     @Override
     public void doWork(Electrica electrica) throws Exception {
-        while (threadReference.get().isInterrupted()) {
+        while (!threadReference.get().isInterrupted()) {
             try {
                 if (!doInLoop()) {
                     break;
