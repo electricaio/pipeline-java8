@@ -65,9 +65,7 @@ subprojects {
     }
 
     def moduleName = it.name
-    if (moduleName != 'electrica-pipeline-cli' &&
-            moduleName != 'electrica-pipeline-java8-spi' &&
-            moduleName != 'electrica-pipeline-java8-launcher') {
+    if (moduleName != 'electrica-pipeline-java8-spi' && moduleName != 'electrica-pipeline-java8-launcher') {
 
         dependencies {
             compileOnly "com.google.auto.service:auto-service:$autoService"
