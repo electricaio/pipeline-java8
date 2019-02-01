@@ -111,7 +111,7 @@ class LambdaManager {
     }
 
     void stop() throws Exception {
-        startLambda();
+        stopLambda();
     }
 
     @Getter
