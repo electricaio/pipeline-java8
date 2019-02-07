@@ -1,8 +1,4 @@
-rootProject.name = 'electrica-pipeline-java8'
-include 'spi'
-include 'launcher'
-include 'hackerrank'
-
-rootProject.children.each {
-    it.name = 'electrica-pipeline-java8-' + it.name
-}
+rootProject.name = 'electrica-pipeline-java8-all'
+include 'electrica-pipeline-java8-spi'
+include 'electrica-pipeline-java8-launcher'
+include 'electrica-pipeline-java8-hackerrank'

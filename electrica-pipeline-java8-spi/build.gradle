@@ -1,5 +1,5 @@
 dependencies {
-    compile 'io.electrica.sdk.java8:api'
+    compile 'io.electrica.sdk.java8:electrica-sdk-java8-api'
 
     compileOnly "com.google.code.findbugs:jsr305:$findbugsJsr305"
 }
