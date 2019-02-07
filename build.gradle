@@ -27,7 +27,7 @@ allprojects {
 
 subprojects {
     ext {
-        electricaSdkJava8 = '0.0.1'
+        electricaSdkJava8Bom = '0.0.1-SNAPSHOT'
 
         findbugsJsr305 = '3.0.2'
         lombok = '1.18.4'
@@ -43,7 +43,7 @@ subprojects {
     apply plugin: 'io.spring.dependency-management'
     dependencyManagement {
         imports {
-            mavenBom "io.electrica.sdk.java8:dependencies:$electricaSdkJava8"
+            mavenBom "io.electrica.sdk.java8:electrica-sdk-java8-dependencies:$electricaSdkJava8Bom"
         }
     }
 
